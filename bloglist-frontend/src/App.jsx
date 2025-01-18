@@ -12,7 +12,9 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [url,setUrl] = useState('')
+  const [url, setUrl] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -40,9 +42,17 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setSuccessMessage(`log in as ${user.username}`)
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000);
     }
     catch(exception){
       console.log(exception.message)
+      setErrorMessage('Unable to log in')
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000);
     }
   }
 
@@ -60,11 +70,23 @@ const App = () => {
       author: author,
       url: url
     }
-    const response = await blogService.create(newBlog)
-    setBlogs(blogs.concat(response))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    try{
+      const response = await blogService.create(newBlog)
+      setBlogs(blogs.concat(response))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setSuccessMessage(`New Blog ${newBlog.title} Created`)
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000);
+    }
+    catch(exception){
+      setErrorMessage('Unable to submit blog', exception.message)
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000);
+    }
     //POST
   }
 
@@ -123,12 +145,15 @@ const App = () => {
     </form>
   )
 
+  
   return (
     <div>
       { user === null?
         loginForm()
         : logOutButton()
       }
+      { successMessage && <p>{successMessage}</p>}
+      { errorMessage && <p>{errorMessage}</p>}
       { user &&
       <div>
       <h2>blogs</h2>
