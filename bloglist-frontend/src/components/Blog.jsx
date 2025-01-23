@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog, blogService }) => {
+const Blog = ({ blog, blogService, blogs, setBlogs }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   
@@ -26,9 +26,21 @@ const Blog = ({ blog, blogService }) => {
     }
     const response = await blogService.updateBlog(blog._id.toString(), updatedBlog)
     setLikes(likes + 1)
-
   }
 
+  const deleteBlog = async (event) => {
+    event.preventDefault()
+    if(window.confirm("Delete Blog?")){
+      try{
+        const blogId = blog._id
+        await blogService.deleteBlog(blog._id.toString())
+        setBlogs(blogs.filter(Blog => Blog._id !== blogId))
+      }
+      catch(error){
+        console.log(error.message)
+      }
+  }
+  }
   return(
   <div style={blogStyle}>
     <div>
@@ -44,6 +56,8 @@ const Blog = ({ blog, blogService }) => {
       <button onClick={addLike}>like</button>
       <br />
       {blog.user.name}
+      <br />
+      <button onClick={deleteBlog}>delete</button>
     </div>
   </div>
   )  

@@ -59,7 +59,13 @@ const App = () => {
   return (
     <div>
       { user === null?
-        <LoginForm setUser={setUser} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} loginService={loginService} blogService={blogService} />
+        <LoginForm 
+          setUser={setUser} 
+          setErrorMessage={setErrorMessage} 
+          setSuccessMessage={setSuccessMessage} 
+          loginService={loginService} 
+          blogService={blogService} 
+        />
         : logOutButton()
       }
       { successMessage && <p>{successMessage}</p>}
@@ -69,7 +75,7 @@ const App = () => {
       <h2>blogs</h2>
       <p>{user.username}</p>
       {sortBlogs().map(blog =>
-        <Blog key={blog.id} blog={blog} blogService={blogService} />
+        <Blog key={blog.id} blog={blog} blogService={blogService} blogs={blogs} setBlogs={setBlogs} />
       )}
       </div>
     }
