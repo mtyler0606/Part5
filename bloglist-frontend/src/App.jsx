@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const App = () => {
     }
   }, [])
 
- 
+
   const handleLogout = async(event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedInBlogAppUser')
@@ -39,7 +39,7 @@ const App = () => {
   }
 
 
-  
+
 
   const logOutButton = () => (
     <form onSubmit={handleLogout}>
@@ -47,7 +47,7 @@ const App = () => {
     </form>
   )
 
-  //TODO - Make blogs adjust position when new likes are added 
+  //TODO - Make blogs adjust position when new likes are added
   const sortingFunction = (a, b) => {
     return a.likes < b.likes ? 1 : -1
   }
@@ -55,16 +55,16 @@ const App = () => {
     return blogs.sort(sortingFunction)
   }
 
-  
+
   return (
     <div>
       { user === null?
-        <LoginForm 
-          setUser={setUser} 
-          setErrorMessage={setErrorMessage} 
-          setSuccessMessage={setSuccessMessage} 
-          loginService={loginService} 
-          blogService={blogService} 
+        <LoginForm
+          setUser={setUser}
+          setErrorMessage={setErrorMessage}
+          setSuccessMessage={setSuccessMessage}
+          loginService={loginService}
+          blogService={blogService}
         />
         : logOutButton()
       }
@@ -72,23 +72,23 @@ const App = () => {
       { errorMessage && <p>{errorMessage}</p>}
       { user &&
       <div>
-      <h2>blogs</h2>
-      <p>{user.username}</p>
-      {sortBlogs().map(blog =>
-        <Blog key={blog.id} blog={blog} blogService={blogService} blogs={blogs} setBlogs={setBlogs} />
-      )}
+        <h2>blogs</h2>
+        <p>{user.username}</p>
+        {sortBlogs().map(blog =>
+          <Blog key={blog.id} blog={blog} blogService={blogService} blogs={blogs} setBlogs={setBlogs} />
+        )}
       </div>
-    }
-    { user && 
+      }
+      { user &&
     <Toggleable buttonLabel='new blog' ref={blogFormRef}>
       <AddBlogForm
         blogs={blogs}
-        setBlogs={setBlogs} 
+        setBlogs={setBlogs}
         blogService={blogService}
         setErrorMessage={setErrorMessage}
         setSuccessMessage={setSuccessMessage} />
     </Toggleable>
-}
+      }
     </div>
   )
 }
