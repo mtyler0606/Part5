@@ -27,4 +27,12 @@ test('does not show other details by default', () => {
     expect(div).toHaveStyle('display: none')
 })
 
+test('URL and likes are displayed after pressing button', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+    const div = container.querySelector('.details')
+    expect(div).not.toHaveStyle('display: none')
+})
+
 })
