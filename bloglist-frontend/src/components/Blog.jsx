@@ -44,12 +44,12 @@ const Blog = ({ blog, blogService, blogs, setBlogs }) => {
   return(
     <div style={blogStyle}>
       <div>
-        {blog.title}
+        <span className='blogTitle'>{blog.title} by {blog.author}</span>
         <button onClick={() => {setDetailsVisible(!detailsVisible)}}>
           {detailsVisible ? 'hide': 'view'}
         </button>
       </div>
-      <div style={showDetails}>
+      <div style={showDetails} className='details'>
         {blog.url}
         <br />
       likes {likes}
