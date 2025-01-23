@@ -40,8 +40,10 @@ const Blog = ({ blog, blogService }) => {
     <div style={showDetails}>
       {blog.url}
       <br />
-      {likes}
+      likes {likes}
       <button onClick={addLike}>like</button>
+      <br />
+      {blog.user.name}
     </div>
   </div>
   )  
