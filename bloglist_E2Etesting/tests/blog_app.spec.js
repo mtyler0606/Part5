@@ -1,7 +1,15 @@
 import { test, expect, beforeEach, describe } from '@playwright/test'
+//const { loginWith } = require('./helper')
 
 describe('Blog app', () => {
-  beforeEach(async ({ page }) => {
+  beforeEach(async ({ page, request }) => {
+    await request.post('http://localhost:3003/api/testing/reset')
+    await request.post('http://localhost:3003/api/users', {
+        data: {username: 'user1',
+        password: 'password1',
+        name: 'John Doe'
+        }
+    })
     await page.goto('http://localhost:5173')
   })
 
@@ -9,4 +17,26 @@ describe('Blog app', () => {
     const locator = await page.getByText('User Login')
     await expect(locator).toBeVisible()
   })
-})
+  test('User can log in with credintials', async({ page }) => {
+    const username = "user1"
+    const password = "password1"
+    //loginWith(page, username, password)
+    await page.getByPlaceholder('Username').fill(username)
+    await page.getByPlaceholder('Password').fill(password)
+    await page.getByRole('button', {name : 'Login'}).click()
+    await expect(page.getByText("John Doe logged in as user1")).toBeVisible()
+  })
+
+  test('log in fails with incorrect credintials', async({ page }) => {
+    const username = "user1"
+    const password = "wrongPassword"
+    //loginWith(page, username, password)
+    await page.getByPlaceholder('Username').fill(username)
+    await page.getByPlaceholder('Password').fill(password)
+    await page.getByRole('button', {name : 'login'}).click()
+    await expect(page.getByText('Unable to log in')).toBeVisible()
+  })
+  })
+
+
+

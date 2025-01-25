@@ -73,7 +73,7 @@ const App = () => {
       { user &&
       <div>
         <h2>blogs</h2>
-        <p>{user.username}</p>
+        <p data-testid='loggedUser' id='loggedUser'>{user.name} logged in as {user.username}</p>
         {sortBlogs().map(blog =>
           <Blog key={blog.id} blog={blog} blogService={blogService} blogs={blogs} setBlogs={setBlogs} />
         )}

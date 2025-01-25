@@ -20,9 +20,10 @@ const LoginForm = ({
       window.localStorage.setItem('loggedInBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
+      //console.log('logged in user')
       setUsername('')
       setPassword('')
-      setSuccessMessage(`log in as ${user.username}`)
+      setSuccessMessage(`logged in as ${user.username}`)
       setTimeout(() => {
         setSuccessMessage('')
       }, 5000)
@@ -60,7 +61,7 @@ const LoginForm = ({
   )
 }
 
-LoginForm.PropTypes = {
+LoginForm.propTypes = {
   setUser: PropTypes.func.isRequired,
   setErrorMessage: PropTypes.func.isRequired,
   setSuccessMessage: PropTypes.func.isRequired,
