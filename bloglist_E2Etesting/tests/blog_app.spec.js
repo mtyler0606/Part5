@@ -1,5 +1,5 @@
 import { test, expect, beforeEach, describe } from '@playwright/test'
-//const { loginWith } = require('./helper')
+const { loginWith, createBlog } = require('./helper')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -20,21 +20,23 @@ describe('Blog app', () => {
   test('User can log in with credintials', async({ page }) => {
     const username = "user1"
     const password = "password1"
-    //loginWith(page, username, password)
-    await page.getByPlaceholder('Username').fill(username)
-    await page.getByPlaceholder('Password').fill(password)
-    await page.getByRole('button', {name : 'Login'}).click()
+    loginWith(page, username, password)
     await expect(page.getByText("John Doe logged in as user1")).toBeVisible()
   })
 
   test('log in fails with incorrect credintials', async({ page }) => {
     const username = "user1"
     const password = "wrongPassword"
-    //loginWith(page, username, password)
-    await page.getByPlaceholder('Username').fill(username)
-    await page.getByPlaceholder('Password').fill(password)
-    await page.getByRole('button', {name : 'login'}).click()
+    loginWith(page, username, password)
     await expect(page.getByText('Unable to log in')).toBeVisible()
+  })
+
+  test('a logged in user can create a new blog', async ({page}) => {
+    const username = "user1"
+    const password = "password1"
+    loginWith(page, username, password)
+    createBlog(page, 'title1', 'John Doe', 'url.tld')
+    await expect(page.getByText('title1 by John Doe')).toBeVisible()
   })
   })
 
