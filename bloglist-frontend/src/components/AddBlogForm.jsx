@@ -31,6 +31,7 @@ const AddBlogForm = ({
     }
     catch(exception){
       setErrorMessage('Unable to submit blog', exception.message)
+      console.log(exception.message)
       setTimeout(() => {
         setErrorMessage('')
       }, 5000)

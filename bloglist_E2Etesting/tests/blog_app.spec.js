@@ -38,6 +38,20 @@ describe('Blog app', () => {
     createBlog(page, 'title1', 'John Doe', 'url.tld')
     await expect(page.getByText('title1 by John Doe')).toBeVisible()
   })
+
+  test('a blog can be liked', async({page}) => {
+    const username = "user1"
+    const password = "password1"
+    loginWith(page, username, password)
+    createBlog(page, 'title1', 'John Doe', 'url.tld')
+    await page.getByRole('button', { name: 'view'}).click()
+    await expect(page.getByText('likes 0')).toBeVisible()
+    await page.getByRole('button', { name: 'like'}).click()
+    await expect(page.getByText('likes 1')).toBeVisible()
+  })
+
+  
+
   })
 
 
