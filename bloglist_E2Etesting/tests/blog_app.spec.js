@@ -50,7 +50,30 @@ describe('Blog app', () => {
     await expect(page.getByText('likes 1')).toBeVisible()
   })
 
-  
+  test('User cannot see delete button of blogs user did not create', async ({request, page}) => {
+    const username = "user1"
+    const password = "password1"
+    loginWith(page, username, password)
+    createBlog(page, 'title1', 'John Doe', 'url.tld')
+    await expect(page.getByText('title1 by John Doe')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Logout'}).click()
+
+    await request.post('http://localhost:3003/api/users', {
+        data: {username: 'user2',
+        password: 'password2',
+        name: 'Jane Doe'
+        }
+    })
+    loginWith(page, 'user2', 'password2')
+    await expect(page.getByText("Jane Doe logged in as user2")).toBeVisible()
+    await expect(page.getByText('title1 by John Doe')).toBeVisible()
+    await page.getByRole('button', { name: 'view'}).click()
+    await expect(page.getByText('likes 0')).toBeVisible()
+    await expect(page.getByText('delete')).not.toBeVisible()
+
+  })
+
 
   })
 
